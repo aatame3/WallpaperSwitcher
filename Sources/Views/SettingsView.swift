@@ -165,13 +165,7 @@ private struct AboutTab: View {
             // アイコン（アニメーション付き）
             Image(systemName: "photo.on.rectangle.angled")
                 .font(.system(size: 52, weight: .thin))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.accentColor, .purple],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .foregroundColor(.white)
                 .scaleEffect(iconScale)
                 .opacity(iconOpacity)
                 .onAppear {

@@ -27,6 +27,7 @@ DerivedData/
 # Build artifacts
 build/
 *.ipa
+*.dmg
 *.dSYM
 *.dSYM.zip
 generate_icon.swift

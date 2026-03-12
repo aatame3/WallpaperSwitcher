@@ -1,7 +1,6 @@
 import AppKit
 import Combine
 import SwiftUI
-import ServiceManagement
 import Metal
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -73,39 +72,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         editItem.target = self
         menu.addItem(editItem)
 
-        // プリセット削除
-        if store.presets.count > 0 {
-            let deleteMenu = NSMenu()
-            for preset in store.presets {
-                let deleteItem = NSMenuItem(title: preset.name, action: #selector(deletePreset(_:)), keyEquivalent: "")
-                deleteItem.target = self
-                deleteItem.representedObject = preset.id
-                deleteMenu.addItem(deleteItem)
-            }
-            let deleteMenuItem = NSMenuItem(title: "プリセットを削除", action: nil, keyEquivalent: "")
-            deleteMenuItem.submenu = deleteMenu
-            menu.addItem(deleteMenuItem)
-        }
-
         menu.addItem(NSMenuItem.separator())
 
-        // ログイン時に起動
-        let launchItem = NSMenuItem(title: "ログイン時に起動", action: #selector(toggleLaunchAtLogin(_:)), keyEquivalent: "")
-        launchItem.target = self
-        launchItem.state = isLaunchAtLoginEnabled ? .on : .off
-        menu.addItem(launchItem)
-
-        menu.addItem(NSMenuItem.separator())
-
-        // About
-        let aboutItem = NSMenuItem(title: "WallpaperSwitcher について", action: #selector(showAbout), keyEquivalent: "")
-        aboutItem.target = self
-        menu.addItem(aboutItem)
-
-        // オンボーディング再生
-        let onboardingItem = NSMenuItem(title: "はじめてガイドを再生", action: #selector(replayOnboarding), keyEquivalent: "")
-        onboardingItem.target = self
-        menu.addItem(onboardingItem)
+        // 設定
+        let settingsItem = NSMenuItem(title: "設定", action: #selector(showSettings), keyEquivalent: "")
+        settingsItem.target = self
+        menu.addItem(settingsItem)
 
         // 終了
         let quitItem = NSMenuItem(title: "終了", action: #selector(quitApp), keyEquivalent: "")
@@ -132,19 +104,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         applyAndUpdateIndex(for: preset)
     }
 
-    @objc private func showAbout() {
+    @objc private func showSettings() {
         closeEditorWindow()
 
-        let aboutView = AboutView()
-        let hostingView = NSHostingView(rootView: aboutView)
+        let settingsView = SettingsView {
+            self.showOnboarding()
+        }
+        let hostingView = NSHostingView(rootView: settingsView)
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 300, height: 200),
+            contentRect: NSRect(x: 0, y: 0, width: 320, height: 240),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
         )
         window.contentView = hostingView
-        window.title = "WallpaperSwitcher について"
+        window.title = "設定"
         window.center()
         window.isReleasedWhenClosed = false
         window.level = .floating
@@ -204,10 +178,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
         editorWindow = window
-    }
-
-    @objc private func replayOnboarding() {
-        showOnboarding()
     }
 
     private static func smoothstep(_ edge0: Double, _ edge1: Double, _ x: Double) -> Double {
@@ -272,9 +242,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         // --- リング部分の色 ---
         float3 ringColor = float3(0.0);
-        ringColor += float3(rI, gI * 0.97, bI * 0.93) * 0.5;
-        ringColor += float3(1.0, 0.5, 0.12) * warmI * 0.3;
-        ringColor += float3(0.35, 0.12, 1.0) * coolI * 0.3;
+        ringColor += float3(rI, gI * 0.97, bI * 0.93) * 0.6;
+        ringColor += float3(1.0, 0.5, 0.12) * warmI * 0.35;
+        ringColor += float3(0.35, 0.12, 1.0) * coolI * 0.35;
 
         // シマー
         float shimmer = sin(dist * 0.018 + u.time * 5.0) * 0.04 + 1.0;
@@ -286,17 +256,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         // --- 光の蓄積（波が通過した領域がじんわり明るくなる） ---
         float passed = smoothstep(wavefront + bandW, wavefront - bandW * 0.5, dist);
-        float buildUp = passed * smoothstep(0.05, 0.45, u.progress);
+        float buildUp = passed * smoothstep(0.05, 0.35, u.progress);
 
-        // --- 全画面グロー（穏やかに覆い、ゆっくり引く） ---
-        float glowUp = smoothstep(0.2, 0.55, u.progress);
-        float glowDn = 1.0 - smoothstep(0.6, 1.0, u.progress);
-        float glow = glowUp * glowDn;
+        // --- 全画面グロー（しっかり覆い尽くしてから、ゆっくり引く） ---
+        float glowUp = smoothstep(0.15, 0.45, u.progress);   // 早めに上がる
+        float glowHold = 1.0 - smoothstep(0.55, 0.65, u.progress); // ピーク維持
+        float glowDn = 1.0 - smoothstep(0.65, 1.0, u.progress);   // ゆっくり引く
+        float glow = glowUp * glowHold * glowDn;
 
-        // 蓄積光（控えめ）
-        float3 fillColor = float3(0.95, 0.93, 1.0) * buildUp * 0.2;
-        // グロー（穏やか）
-        fillColor += float3(0.97, 0.96, 1.0) * glow * 0.45;
+        // 蓄積光
+        float3 fillColor = float3(0.95, 0.93, 1.0) * buildUp * 0.3;
+        // グロー（画面を覆い尽くす強さ）
+        fillColor += float3(0.97, 0.96, 1.0) * glow * 0.85;
 
         // --- 合成 ---
         float3 color = ringColor + fillColor;
@@ -408,10 +379,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         // --- フレームループ ---
         // タイムライン:
-        //   0.0〜0.5: 光の波が中心から画面全体へ広がる
-        //   0.3〜0.6: 画面が光に覆い尽くされる（ピーク）
-        //   0.5〜0.6: 旧壁紙がフェードアウト（光の中で切り替わる）
-        //   0.6〜1.0: 光がゆっくり引いて新壁紙が現れる
+        //   0.0〜0.45: 光の波が中心から画面全体へ広がる
+        //   0.45〜0.65: 画面が光で完全に覆い尽くされる（ピーク）
+        //   0.55〜0.65: 光に隠れた状態で旧壁紙をフェードアウト
+        //   0.65〜1.0: 光がゆっくり引いて新壁紙が現れる
         let duration: TimeInterval = 4.5
         let animStart = CACurrentMediaTime()
 
@@ -423,8 +394,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 ? 2.0 * rawT * rawT
                 : 1.0 - pow(-2.0 * rawT + 2.0, 2) / 2.0
 
-            // 旧壁紙のフェードアウト（光のピーク中にゆっくり消す）
-            let wallpaperFade: Float = 1.0 - Float(AppDelegate.smoothstep(0.45, 0.65, Double(progress)))
+            // 旧壁紙のフェードアウト（光が画面を完全に覆った瞬間に消す）
+            let wallpaperFade: Float = 1.0 - Float(AppDelegate.smoothstep(0.55, 0.65, Double(progress)))
             CATransaction.begin()
             CATransaction.setDisableActions(true)
             imageLayer.opacity = wallpaperFade
@@ -469,14 +440,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         RunLoop.main.add(timer, forMode: .common)
     }
 
-    @objc private func deletePreset(_ sender: NSMenuItem) {
-        guard let id = sender.representedObject as? UUID,
-              let preset = store.presets.first(where: { $0.id == id }) else { return }
-        store.delete(preset)
-        rebuildMenu()
-        restartTimerIfNeeded()
-    }
-
     @objc private func quitApp() {
         NSApplication.shared.terminate(nil)
     }
@@ -487,30 +450,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func editPresets() {
         showPresetListWindow()
-    }
-
-    // MARK: - Launch at Login
-
-    private var isLaunchAtLoginEnabled: Bool {
-        if #available(macOS 13.0, *) {
-            return SMAppService.mainApp.status == .enabled
-        }
-        return false
-    }
-
-    @objc private func toggleLaunchAtLogin(_ sender: NSMenuItem) {
-        if #available(macOS 13.0, *) {
-            do {
-                if SMAppService.mainApp.status == .enabled {
-                    try SMAppService.mainApp.unregister()
-                } else {
-                    try SMAppService.mainApp.register()
-                }
-            } catch {
-                print("ログイン項目の変更に失敗: \(error.localizedDescription)")
-            }
-        }
-        rebuildMenu()
     }
 
     // MARK: - Editor Window

@@ -15,6 +15,7 @@
 		7C8DB178BAF45A7D33623079 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AB2F73F8B7156E20F225AE /* PresetStore.swift */; };
 		BBDDAB2F8EDA52D37D23E231 /* WallpaperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E90AE7965D90F0DEA965C0D /* WallpaperService.swift */; };
 		D3A3B1893A6459E09DAD885F /* PresetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43AD1B93B938C495FBA3DB1 /* PresetListView.swift */; };
+		A1B2C3D4E5F60718293A4B5C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7F8091A2B3C4D5E6F7081 /* SettingsView.swift */; };
 		FF8966B774657FB797957DDF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711978A62DEC7A73843B9401 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 		921D185C167AE67F3781B33D /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		9669F9723FE25E11E1C32AB7 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		B031B4FB7EDFF6F1B499E862 /* WallpaperSwitcherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperSwitcherApp.swift; sourceTree = "<group>"; };
+		D6E7F8091A2B3C4D5E6F7081 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E43AD1B93B938C495FBA3DB1 /* PresetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -47,6 +49,7 @@
 				9669F9723FE25E11E1C32AB7 /* OnboardingView.swift */,
 				0E66BDFDA7A112E672AB9236 /* PresetEditorView.swift */,
 				E43AD1B93B938C495FBA3DB1 /* PresetListView.swift */,
+				D6E7F8091A2B3C4D5E6F7081 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -149,6 +152,7 @@
 				22EA8CD26D70EC97F036A065 /* Preset.swift in Sources */,
 				327225815E2A6B70942C6C21 /* PresetEditorView.swift in Sources */,
 				D3A3B1893A6459E09DAD885F /* PresetListView.swift in Sources */,
+				A1B2C3D4E5F60718293A4B5C /* SettingsView.swift in Sources */,
 				7C8DB178BAF45A7D33623079 /* PresetStore.swift in Sources */,
 				BBDDAB2F8EDA52D37D23E231 /* WallpaperService.swift in Sources */,
 				4BC914469D7D5331F6C7B7C0 /* WallpaperSwitcherApp.swift in Sources */,

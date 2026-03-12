@@ -224,9 +224,6 @@ private struct AboutTab: View {
                         .foregroundColor(.secondary)
                     Text("💩")
                         .font(.caption)
-                    Text("in Kagoshima")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
                 }
             }
 

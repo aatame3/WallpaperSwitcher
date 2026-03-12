@@ -52,9 +52,6 @@ struct AboutView: View {
                     .foregroundColor(.secondary)
                 Text("💩")
                     .font(.caption)
-                Text("in Kagoshima")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
             }
         }
         .padding(24)

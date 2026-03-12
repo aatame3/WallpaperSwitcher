@@ -1,0 +1,346 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		22EA8CD26D70EC97F036A065 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1709EDAA96BB7935AFF775 /* Preset.swift */; };
+		2F410DFA721024FAFAFEFEF2 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9669F9723FE25E11E1C32AB7 /* OnboardingView.swift */; };
+		327225815E2A6B70942C6C21 /* PresetEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E66BDFDA7A112E672AB9236 /* PresetEditorView.swift */; };
+		4BC914469D7D5331F6C7B7C0 /* WallpaperSwitcherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B031B4FB7EDFF6F1B499E862 /* WallpaperSwitcherApp.swift */; };
+		553F0CDAC2132394C67A3140 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921D185C167AE67F3781B33D /* AboutView.swift */; };
+		7C8DB178BAF45A7D33623079 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AB2F73F8B7156E20F225AE /* PresetStore.swift */; };
+		BBDDAB2F8EDA52D37D23E231 /* WallpaperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E90AE7965D90F0DEA965C0D /* WallpaperService.swift */; };
+		D3A3B1893A6459E09DAD885F /* PresetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43AD1B93B938C495FBA3DB1 /* PresetListView.swift */; };
+		FF8966B774657FB797957DDF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711978A62DEC7A73843B9401 /* AppDelegate.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0E66BDFDA7A112E672AB9236 /* PresetEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetEditorView.swift; sourceTree = "<group>"; };
+		2E90AE7965D90F0DEA965C0D /* WallpaperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperService.swift; sourceTree = "<group>"; };
+		4F6EB60AC492BD810B069C8E /* WallpaperSwitcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WallpaperSwitcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		59AB2F73F8B7156E20F225AE /* PresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStore.swift; sourceTree = "<group>"; };
+		6A1709EDAA96BB7935AFF775 /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		711978A62DEC7A73843B9401 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		921D185C167AE67F3781B33D /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		9669F9723FE25E11E1C32AB7 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B031B4FB7EDFF6F1B499E862 /* WallpaperSwitcherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperSwitcherApp.swift; sourceTree = "<group>"; };
+		E43AD1B93B938C495FBA3DB1 /* PresetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetListView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		03D9C8896C9DB058C42D2C7F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6A1709EDAA96BB7935AFF775 /* Preset.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		807DE3270D8808BC6BF38658 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				921D185C167AE67F3781B33D /* AboutView.swift */,
+				9669F9723FE25E11E1C32AB7 /* OnboardingView.swift */,
+				0E66BDFDA7A112E672AB9236 /* PresetEditorView.swift */,
+				E43AD1B93B938C495FBA3DB1 /* PresetListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		83EC7A0ADA31B24AAFCB7C1E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				711978A62DEC7A73843B9401 /* AppDelegate.swift */,
+				B031B4FB7EDFF6F1B499E862 /* WallpaperSwitcherApp.swift */,
+				03D9C8896C9DB058C42D2C7F /* Models */,
+				CC2FA468BBA63DE490AFA530 /* Services */,
+				807DE3270D8808BC6BF38658 /* Views */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		B803FD9077FD147E5DEFF081 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4F6EB60AC492BD810B069C8E /* WallpaperSwitcher.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CC2FA468BBA63DE490AFA530 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				59AB2F73F8B7156E20F225AE /* PresetStore.swift */,
+				2E90AE7965D90F0DEA965C0D /* WallpaperService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E08F11EB8AE7A245080F600C = {
+			isa = PBXGroup;
+			children = (
+				83EC7A0ADA31B24AAFCB7C1E /* Sources */,
+				B803FD9077FD147E5DEFF081 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8F7924E56498B030FE755D2D /* WallpaperSwitcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D425B22B1A52743A3416B507 /* Build configuration list for PBXNativeTarget "WallpaperSwitcher" */;
+			buildPhases = (
+				C45CD6934DB51A49486A8383 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WallpaperSwitcher;
+			packageProductDependencies = (
+			);
+			productName = WallpaperSwitcher;
+			productReference = 4F6EB60AC492BD810B069C8E /* WallpaperSwitcher.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		73F6817D3F707262C047C5E7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 1D5A6B3770657C5014674689 /* Build configuration list for PBXProject "WallpaperSwitcher" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = E08F11EB8AE7A245080F600C;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B803FD9077FD147E5DEFF081 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8F7924E56498B030FE755D2D /* WallpaperSwitcher */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C45CD6934DB51A49486A8383 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				553F0CDAC2132394C67A3140 /* AboutView.swift in Sources */,
+				FF8966B774657FB797957DDF /* AppDelegate.swift in Sources */,
+				2F410DFA721024FAFAFEFEF2 /* OnboardingView.swift in Sources */,
+				22EA8CD26D70EC97F036A065 /* Preset.swift in Sources */,
+				327225815E2A6B70942C6C21 /* PresetEditorView.swift in Sources */,
+				D3A3B1893A6459E09DAD885F /* PresetListView.swift in Sources */,
+				7C8DB178BAF45A7D33623079 /* PresetStore.swift in Sources */,
+				BBDDAB2F8EDA52D37D23E231 /* WallpaperService.swift in Sources */,
+				4BC914469D7D5331F6C7B7C0 /* WallpaperSwitcherApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		753AC1AB3EB5DEF9E02AE068 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9E4425D6977E19F250496C26 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WallpaperSwitcher.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wallpaperswitcher.app;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		A25B5B5CFA494F1DC25147D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CA044266A7440C9C9D629474 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WallpaperSwitcher.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wallpaperswitcher.app;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D5A6B3770657C5014674689 /* Build configuration list for PBXProject "WallpaperSwitcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				753AC1AB3EB5DEF9E02AE068 /* Debug */,
+				A25B5B5CFA494F1DC25147D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D425B22B1A52743A3416B507 /* Build configuration list for PBXNativeTarget "WallpaperSwitcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA044266A7440C9C9D629474 /* Debug */,
+				9E4425D6977E19F250496C26 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 73F6817D3F707262C047C5E7 /* Project object */;
+}

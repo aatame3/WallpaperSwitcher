@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F1A2B3C4D5E6F7081920A1B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2B3C4D5F6071829304A5B6C /* Assets.xcassets */; };
 		22EA8CD26D70EC97F036A065 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1709EDAA96BB7935AFF775 /* Preset.swift */; };
 		2F410DFA721024FAFAFEFEF2 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9669F9723FE25E11E1C32AB7 /* OnboardingView.swift */; };
 		327225815E2A6B70942C6C21 /* PresetEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E66BDFDA7A112E672AB9236 /* PresetEditorView.swift */; };
@@ -31,6 +32,7 @@
 		B031B4FB7EDFF6F1B499E862 /* WallpaperSwitcherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperSwitcherApp.swift; sourceTree = "<group>"; };
 		D6E7F8091A2B3C4D5E6F7081 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E43AD1B93B938C495FBA3DB1 /* PresetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetListView.swift; sourceTree = "<group>"; };
+		E2B3C4D5F6071829304A5B6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -83,10 +85,19 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		AABB1122334455667788AABB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E2B3C4D5F6071829304A5B6C /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		E08F11EB8AE7A245080F600C = {
 			isa = PBXGroup;
 			children = (
 				83EC7A0ADA31B24AAFCB7C1E /* Sources */,
+				AABB1122334455667788AABB /* Resources */,
 				B803FD9077FD147E5DEFF081 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -99,6 +110,7 @@
 			buildConfigurationList = D425B22B1A52743A3416B507 /* Build configuration list for PBXNativeTarget "WallpaperSwitcher" */;
 			buildPhases = (
 				C45CD6934DB51A49486A8383 /* Sources */,
+				CCDD1122334455667788CCDD /* Resources */,
 			);
 			buildRules = (
 			);
@@ -140,6 +152,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CCDD1122334455667788CCDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1A2B3C4D5E6F7081920A1B2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C45CD6934DB51A49486A8383 /* Sources */ = {

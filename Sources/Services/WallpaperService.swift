@@ -4,6 +4,8 @@ import Foundation
 enum WallpaperService {
     static let supportedExtensions: Set<String> = ["jpg", "jpeg", "png", "heic"]
     private static var overlayWindows: [NSWindow] = []
+    private static var isTransitioning = false
+    private static var pendingRequest: (() -> Void)?
 
     /// 指定フォルダから画像を取得し、ソート済みリストを返す
     static func imageURLs(from folderPath: String) -> [URL] {
@@ -22,7 +24,14 @@ enum WallpaperService {
 
     /// プリセットの設定に従って壁紙を適用し、更新後のcurrentIndexを返す
     static func applyWallpaper(for preset: Preset) -> Int {
-        let images = imageURLs(from: preset.folderPath)
+        // Security-Scoped Bookmark があれば復元してアクセス権を取得
+        var scopedURL: URL?
+        if let bookmark = preset.folderBookmark {
+            scopedURL = FolderAccess.resolveBookmark(bookmark)
+        }
+        defer { scopedURL?.stopAccessingSecurityScopedResource() }
+
+        let images = imageURLs(from: scopedURL?.path ?? preset.folderPath)
         guard !images.isEmpty else { return preset.currentIndex }
 
         let chosen: URL
@@ -43,7 +52,12 @@ enum WallpaperService {
 
     /// トランジション付きで壁紙を切り替える
     private static func transitionToWallpaper(_ imageURL: URL, style: TransitionStyle) {
-        cleanUpOverlays()
+        // 前のトランジションが進行中なら保留（完遂後に実行される）
+        if isTransitioning {
+            pendingRequest = { transitionToWallpaper(imageURL, style: style) }
+            return
+        }
+        isTransitioning = true
 
         // 各スクリーンにオーバーレイウィンドウを作成
         for screen in NSScreen.screens {
@@ -113,7 +127,7 @@ enum WallpaperService {
                 window.animator().alphaValue = 0.0
             }
         }, completionHandler: {
-            cleanUpOverlays()
+            transitionDidFinish()
         })
     }
 
@@ -129,7 +143,7 @@ enum WallpaperService {
                 window.animator().alphaValue = 0.3
             }
         }, completionHandler: {
-            cleanUpOverlays()
+            transitionDidFinish()
         })
     }
 
@@ -153,9 +167,21 @@ enum WallpaperService {
                     window.animator().alphaValue = 0.0
                 }
             }, completionHandler: {
-                cleanUpOverlays()
+                transitionDidFinish()
             })
         })
+    }
+
+    /// トランジション完了時に呼ばれる共通処理
+    private static func transitionDidFinish() {
+        cleanUpOverlays()
+        isTransitioning = false
+
+        // 保留中のリクエストがあれば実行
+        if let pending = pendingRequest {
+            pendingRequest = nil
+            pending()
+        }
     }
 
     private static func cleanUpOverlays() {

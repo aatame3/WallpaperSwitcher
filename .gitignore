@@ -25,6 +25,8 @@ DerivedData/
 .swiftpm/
 
 # Build artifacts
+build/
 *.ipa
 *.dSYM
 *.dSYM.zip
+generate_icon.swift

@@ -59,20 +59,59 @@ struct Preset: Identifiable, Codable, Equatable {
     var id: UUID
     var name: String
     var folderPath: String
+    var folderBookmark: Data?
     var shuffleInterval: ShuffleInterval
     var order: WallpaperOrder
     var transitionStyle: TransitionStyle
     var currentIndex: Int
 
-    init(id: UUID = UUID(), name: String, folderPath: String,
+    init(id: UUID = UUID(), name: String, folderPath: String, folderBookmark: Data? = nil,
          shuffleInterval: ShuffleInterval = .off, order: WallpaperOrder = .random,
          transitionStyle: TransitionStyle = .crossfade, currentIndex: Int = 0) {
         self.id = id
         self.name = name
         self.folderPath = folderPath
+        self.folderBookmark = folderBookmark
         self.shuffleInterval = shuffleInterval
         self.order = order
         self.transitionStyle = transitionStyle
         self.currentIndex = currentIndex
+    }
+}
+
+// MARK: - Security-Scoped Bookmark Helpers
+
+enum FolderAccess {
+    /// NSOpenPanel で選ばれた URL から bookmark を作成
+    static func createBookmark(for url: URL) -> Data? {
+        try? url.bookmarkData(
+            options: [.withSecurityScope],
+            includingResourceValuesForKeys: nil,
+            relativeTo: nil
+        )
+    }
+
+    /// 保存した bookmark から URL を復元し、アクセスを開始する
+    /// 返された URL は使い終わったら stopAccessingSecurityScopedResource() を呼ぶこと
+    static func resolveBookmark(_ bookmark: Data) -> URL? {
+        var isStale = false
+        guard let url = try? URL(
+            resolvingBookmarkData: bookmark,
+            options: [.withSecurityScope],
+            relativeTo: nil,
+            bookmarkDataIsStale: &isStale
+        ) else { return nil }
+
+        if isStale {
+            // ブックマークが古い場合、再作成を試みる（アクセス権がまだあれば成功する）
+            _ = try? url.bookmarkData(
+                options: [.withSecurityScope],
+                includingResourceValuesForKeys: nil,
+                relativeTo: nil
+            )
+        }
+
+        guard url.startAccessingSecurityScopedResource() else { return nil }
+        return url
     }
 }

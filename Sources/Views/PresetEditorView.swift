@@ -3,6 +3,7 @@ import SwiftUI
 struct PresetEditorView: View {
     @State private var name: String
     @State private var folderPath: String
+    @State private var folderBookmark: Data?
     @State private var shuffleInterval: ShuffleInterval
     @State private var order: WallpaperOrder
     @State private var transitionStyle: TransitionStyle
@@ -14,6 +15,7 @@ struct PresetEditorView: View {
     init(preset: Preset?, onSave: @escaping (Preset) -> Void, onCancel: @escaping () -> Void) {
         _name = State(initialValue: preset?.name ?? "")
         _folderPath = State(initialValue: preset?.folderPath ?? "")
+        _folderBookmark = State(initialValue: preset?.folderBookmark)
         _shuffleInterval = State(initialValue: preset?.shuffleInterval ?? .off)
         _order = State(initialValue: preset?.order ?? .random)
         _transitionStyle = State(initialValue: preset?.transitionStyle ?? .crossfade)
@@ -89,6 +91,7 @@ struct PresetEditorView: View {
                         id: existingID ?? UUID(),
                         name: name,
                         folderPath: folderPath,
+                        folderBookmark: folderBookmark,
                         shuffleInterval: shuffleInterval,
                         order: order,
                         transitionStyle: transitionStyle,
@@ -112,6 +115,7 @@ struct PresetEditorView: View {
         panel.message = "壁紙フォルダを選択してください"
         if panel.runModal() == .OK, let url = panel.url {
             folderPath = url.path
+            folderBookmark = FolderAccess.createBookmark(for: url)
         }
     }
 }

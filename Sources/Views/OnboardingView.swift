@@ -4,6 +4,7 @@ struct OnboardingView: View {
     @State private var currentPage = 0
     @State private var presetName = ""
     @State private var folderPath = ""
+    @State private var folderBookmark: Data?
     @State private var shuffleInterval: ShuffleInterval = .off
     @State private var order: WallpaperOrder = .random
     @State private var transitionStyle: TransitionStyle = .crossfade
@@ -63,6 +64,7 @@ struct OnboardingView: View {
                         let preset = Preset(
                             name: presetName,
                             folderPath: folderPath,
+                            folderBookmark: folderBookmark,
                             shuffleInterval: shuffleInterval,
                             order: order,
                             transitionStyle: transitionStyle
@@ -357,6 +359,7 @@ struct OnboardingView: View {
         panel.message = "壁紙フォルダを選択してください"
         if panel.runModal() == .OK, let url = panel.url {
             folderPath = url.path
+            folderBookmark = FolderAccess.createBookmark(for: url)
         }
     }
 }

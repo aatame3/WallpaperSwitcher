@@ -228,46 +228,53 @@ struct OnboardingView: View {
                 .foregroundColor(.secondary)
                 .opacity(subtitleOpacity)
 
-            VStack(spacing: 12) {
-                HStack {
-                    Text("切り替え")
-                    Spacer()
-                    Picker("", selection: $trigger) {
-                        ForEach(WallpaperTrigger.allCases, id: \.self) { t in
-                            Text(t.label).tag(t)
+            if !isSingleFile {
+                VStack(spacing: 12) {
+                    HStack {
+                        Text("切り替え")
+                        Spacer()
+                        Picker("", selection: $trigger) {
+                            ForEach(WallpaperTrigger.allCases, id: \.self) { t in
+                                Text(t.label).tag(t)
+                            }
                         }
+                        .labelsHidden()
+                        .frame(width: 160)
                     }
-                    .labelsHidden()
-                    .frame(width: 160)
-                }
 
-                HStack {
-                    Text("順序")
-                    Spacer()
-                    Picker("", selection: $order) {
-                        ForEach(WallpaperOrder.allCases, id: \.self) { o in
-                            Text(o.label).tag(o)
+                    HStack {
+                        Text("順序")
+                        Spacer()
+                        Picker("", selection: $order) {
+                            ForEach(WallpaperOrder.allCases, id: \.self) { o in
+                                Text(o.label).tag(o)
+                            }
                         }
+                        .labelsHidden()
+                        .pickerStyle(.segmented)
+                        .frame(width: 180)
                     }
-                    .labelsHidden()
-                    .pickerStyle(.segmented)
-                    .frame(width: 180)
-                }
 
-                HStack {
-                    Text("トランジション")
-                    Spacer()
-                    Picker("", selection: $transitionStyle) {
-                        ForEach(TransitionStyle.allCases, id: \.self) { style in
-                            Text(style.label).tag(style)
+                    HStack {
+                        Text("トランジション")
+                        Spacer()
+                        Picker("", selection: $transitionStyle) {
+                            ForEach(TransitionStyle.allCases, id: \.self) { style in
+                                Text(style.label).tag(style)
+                            }
                         }
+                        .labelsHidden()
+                        .frame(width: 160)
                     }
-                    .labelsHidden()
-                    .frame(width: 160)
                 }
+                .frame(width: 320)
+                .opacity(contentOpacity)
+            } else {
+                Text("単一画像が選択されています")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .opacity(contentOpacity)
             }
-            .frame(width: 320)
-            .opacity(contentOpacity)
 
             Spacer()
         }
@@ -275,6 +282,12 @@ struct OnboardingView: View {
     }
 
     // MARK: - Computed
+
+    private var isSingleFile: Bool {
+        guard !folderPath.isEmpty else { return false }
+        var isDir: ObjCBool = false
+        return FileManager.default.fileExists(atPath: folderPath, isDirectory: &isDir) && !isDir.boolValue
+    }
 
     private var canProceed: Bool {
         switch currentPage {

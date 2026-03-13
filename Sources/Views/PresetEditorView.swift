@@ -1,10 +1,11 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct PresetEditorView: View {
     @State private var name: String
     @State private var folderPath: String
     @State private var folderBookmark: Data?
-    @State private var shuffleInterval: ShuffleInterval
+    @State private var trigger: WallpaperTrigger
     @State private var order: WallpaperOrder
     @State private var transitionStyle: TransitionStyle
     private let existingID: UUID?
@@ -16,7 +17,7 @@ struct PresetEditorView: View {
         _name = State(initialValue: preset?.name ?? "")
         _folderPath = State(initialValue: preset?.folderPath ?? "")
         _folderBookmark = State(initialValue: preset?.folderBookmark)
-        _shuffleInterval = State(initialValue: preset?.shuffleInterval ?? .off)
+        _trigger = State(initialValue: preset?.trigger ?? .off)
         _order = State(initialValue: preset?.order ?? .random)
         _transitionStyle = State(initialValue: preset?.transitionStyle ?? .crossfade)
         existingID = preset?.id
@@ -34,7 +35,7 @@ struct PresetEditorView: View {
                 .textFieldStyle(.roundedBorder)
 
             HStack {
-                TextField("フォルダパス", text: $folderPath)
+                TextField("壁紙またはフォルダ", text: $folderPath)
                     .textFieldStyle(.roundedBorder)
                 Button("選択…") {
                     chooseFolder()
@@ -44,15 +45,15 @@ struct PresetEditorView: View {
             Divider()
 
             HStack {
-                Text("シャッフル")
+                Text("切り替え")
                 Spacer()
-                Picker("", selection: $shuffleInterval) {
-                    ForEach(ShuffleInterval.allCases, id: \.self) { interval in
-                        Text(interval.label).tag(interval)
+                Picker("", selection: $trigger) {
+                    ForEach(WallpaperTrigger.allCases, id: \.self) { t in
+                        Text(t.label).tag(t)
                     }
                 }
                 .labelsHidden()
-                .frame(width: 130)
+                .frame(width: 160)
             }
 
             HStack {
@@ -92,7 +93,7 @@ struct PresetEditorView: View {
                         name: name,
                         folderPath: folderPath,
                         folderBookmark: folderBookmark,
-                        shuffleInterval: shuffleInterval,
+                        trigger: trigger,
                         order: order,
                         transitionStyle: transitionStyle,
                         currentIndex: existingIndex
@@ -109,10 +110,11 @@ struct PresetEditorView: View {
 
     private func chooseFolder() {
         let panel = NSOpenPanel()
-        panel.canChooseFiles = false
+        panel.canChooseFiles = true
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
-        panel.message = "壁紙フォルダを選択してください"
+        panel.allowedContentTypes = [.jpeg, .png, .heic]
+        panel.message = "壁紙ファイルまたはフォルダを選択してください"
         if panel.runModal() == .OK, let url = panel.url {
             folderPath = url.path
             folderBookmark = FolderAccess.createBookmark(for: url)

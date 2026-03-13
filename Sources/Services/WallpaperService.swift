@@ -7,9 +7,21 @@ enum WallpaperService {
     private static var isTransitioning = false
     private static var pendingRequest: (() -> Void)?
 
-    /// 指定フォルダから画像を取得し、ソート済みリストを返す
-    static func imageURLs(from folderPath: String) -> [URL] {
-        let folderURL = URL(fileURLWithPath: folderPath)
+    /// 指定パスから画像を取得し、ソート済みリストを返す（ファイルまたはフォルダに対応）
+    static func imageURLs(from path: String) -> [URL] {
+        var isDirectory: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: path, isDirectory: &isDirectory) else {
+            return []
+        }
+
+        if !isDirectory.boolValue {
+            // 単一ファイル
+            let url = URL(fileURLWithPath: path)
+            return supportedExtensions.contains(url.pathExtension.lowercased()) ? [url] : []
+        }
+
+        // フォルダ
+        let folderURL = URL(fileURLWithPath: path)
         guard let contents = try? FileManager.default.contentsOfDirectory(
             at: folderURL,
             includingPropertiesForKeys: nil,

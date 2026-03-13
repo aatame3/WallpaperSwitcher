@@ -8,6 +8,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let store = PresetStore()
     private var editorWindow: NSWindow?
     private var shuffleTimer: Timer?
+    private var unlockObserver: Any?
+    private var wakeObserver: Any?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -16,8 +18,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         rebuildMenu()
 
-        // 起動時にアクティブプリセットのタイマーを復元
-        restartTimerIfNeeded()
+        // 起動時にアクティブプリセットのトリガーを復元
+        restartTriggers()
+
+        // .daily プリセットの起動時チェック
+        if let id = store.activePresetID,
+           let preset = store.presets.first(where: { $0.id == id }),
+           preset.trigger == .daily {
+            applyIfDateChanged(for: preset)
+        }
 
         // 初回起動時はオンボーディングを表示
         if !UserDefaults.standard.bool(forKey: "hasCompletedOnboarding") {
@@ -95,7 +104,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         store.setActive(preset)
         applyAndUpdateIndex(for: preset)
-        restartTimerIfNeeded()
+        restartTriggers()
     }
 
     @objc private func nextWallpaper() {
@@ -160,7 +169,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
             self.closeEditorWindow()
             self.rebuildMenu()
-            self.restartTimerIfNeeded()
+            self.restartTriggers()
         }
 
         let hostingView = NSHostingView(rootView: onboardingView)
@@ -466,7 +475,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
             self.closeEditorWindow()
             self.rebuildMenu()
-            self.restartTimerIfNeeded()
+            self.restartTriggers()
         } onCancel: { [weak self] in
             self?.closeEditorWindow()
         }
@@ -532,19 +541,78 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func restartTimerIfNeeded() {
+    private func restartTriggers() {
+        // 既存タイマー・オブザーバーをクリーンアップ
         shuffleTimer?.invalidate()
         shuffleTimer = nil
+        if let obs = unlockObserver {
+            DistributedNotificationCenter.default().removeObserver(obs)
+            unlockObserver = nil
+        }
+        if let obs = wakeObserver {
+            NSWorkspace.shared.notificationCenter.removeObserver(obs)
+            wakeObserver = nil
+        }
 
         guard let id = store.activePresetID,
               let preset = store.presets.first(where: { $0.id == id }),
-              preset.shuffleInterval != .off else { return }
+              preset.trigger != .off else { return }
 
-        let interval = TimeInterval(preset.shuffleInterval.rawValue)
-        shuffleTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
-            guard let self,
-                  let current = self.store.presets.first(where: { $0.id == id }) else { return }
-            self.applyAndUpdateIndex(for: current)
+        switch preset.trigger {
+        case .onUnlock:
+            unlockObserver = DistributedNotificationCenter.default().addObserver(
+                forName: .init("com.apple.screenIsUnlocked"),
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self,
+                      let current = self.store.presets.first(where: { $0.id == id }) else { return }
+                self.applyAndUpdateIndex(for: current)
+            }
+        case .daily:
+            // 60秒ごとに日付変更をチェック
+            shuffleTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in
+                guard let self,
+                      let current = self.store.presets.first(where: { $0.id == id }) else { return }
+                self.applyIfDateChanged(for: current)
+            }
+            // スリープ復帰時にもチェック
+            wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(
+                forName: NSWorkspace.screensDidWakeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self,
+                      let current = self.store.presets.first(where: { $0.id == id }) else { return }
+                self.applyIfDateChanged(for: current)
+            }
+        default:
+            // タイマーケース（既存ロジック）
+            let interval = TimeInterval(preset.trigger.rawValue)
+            shuffleTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+                guard let self,
+                      let current = self.store.presets.first(where: { $0.id == id }) else { return }
+                self.applyAndUpdateIndex(for: current)
+            }
+        }
+    }
+
+    private func applyIfDateChanged(for preset: Preset) {
+        let key = "lastWallpaperDate_\(preset.id.uuidString)"
+        let today = Calendar.current.startOfDay(for: Date())
+        let lastDate = UserDefaults.standard.object(forKey: key) as? Date ?? .distantPast
+        guard lastDate < today else { return }
+        UserDefaults.standard.set(today, forKey: key)
+        applyAndUpdateIndex(for: preset)
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        shuffleTimer?.invalidate()
+        if let obs = unlockObserver {
+            DistributedNotificationCenter.default().removeObserver(obs)
+        }
+        if let obs = wakeObserver {
+            NSWorkspace.shared.notificationCenter.removeObserver(obs)
         }
     }
 }

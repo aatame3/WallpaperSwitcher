@@ -1,11 +1,12 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct OnboardingView: View {
     @State private var currentPage = 0
     @State private var presetName = ""
     @State private var folderPath = ""
     @State private var folderBookmark: Data?
-    @State private var shuffleInterval: ShuffleInterval = .off
+    @State private var trigger: WallpaperTrigger = .off
     @State private var order: WallpaperOrder = .random
     @State private var transitionStyle: TransitionStyle = .crossfade
 
@@ -65,7 +66,7 @@ struct OnboardingView: View {
                             name: presetName,
                             folderPath: folderPath,
                             folderBookmark: folderBookmark,
-                            shuffleInterval: shuffleInterval,
+                            trigger: trigger,
                             order: order,
                             transitionStyle: transitionStyle
                         )
@@ -170,20 +171,20 @@ struct OnboardingView: View {
                 .scaleEffect(iconScale)
                 .opacity(iconOpacity)
 
-            Text("壁紙フォルダを選ぼう")
+            Text("壁紙を選ぼう")
                 .font(.title2)
                 .fontWeight(.semibold)
                 .opacity(titleOpacity)
                 .offset(y: titleOffset)
 
-            Text("好きな壁紙を入れたフォルダを指定してね\nJPEG・PNG・HEIC に対応しています")
+            Text("壁紙ファイルまたはフォルダを指定してね\nJPEG・PNG・HEIC に対応しています")
                 .font(.caption)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
                 .opacity(subtitleOpacity)
 
             HStack {
-                TextField("フォルダパス", text: $folderPath)
+                TextField("壁紙またはフォルダ", text: $folderPath)
                     .textFieldStyle(.roundedBorder)
                 Button("選択…") {
                     chooseFolder()
@@ -229,15 +230,15 @@ struct OnboardingView: View {
 
             VStack(spacing: 12) {
                 HStack {
-                    Text("シャッフル")
+                    Text("切り替え")
                     Spacer()
-                    Picker("", selection: $shuffleInterval) {
-                        ForEach(ShuffleInterval.allCases, id: \.self) { interval in
-                            Text(interval.label).tag(interval)
+                    Picker("", selection: $trigger) {
+                        ForEach(WallpaperTrigger.allCases, id: \.self) { t in
+                            Text(t.label).tag(t)
                         }
                     }
                     .labelsHidden()
-                    .frame(width: 130)
+                    .frame(width: 160)
                 }
 
                 HStack {
@@ -353,10 +354,11 @@ struct OnboardingView: View {
 
     private func chooseFolder() {
         let panel = NSOpenPanel()
-        panel.canChooseFiles = false
+        panel.canChooseFiles = true
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
-        panel.message = "壁紙フォルダを選択してください"
+        panel.allowedContentTypes = [.jpeg, .png, .heic]
+        panel.message = "壁紙ファイルまたはフォルダを選択してください"
         if panel.runModal() == .OK, let url = panel.url {
             folderPath = url.path
             folderBookmark = FolderAccess.createBookmark(for: url)

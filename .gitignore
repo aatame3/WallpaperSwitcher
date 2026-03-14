@@ -31,3 +31,4 @@ build/
 *.dSYM
 *.dSYM.zip
 generate_icon.swift
+Sources/Generated/

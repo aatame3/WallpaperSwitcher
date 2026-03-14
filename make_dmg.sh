@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# ステージングディレクトリを準備
+STAGING_DIR="build/dmg_staging"
+rm -rf "$STAGING_DIR"
+mkdir -p "$STAGING_DIR"
+cp -R build/WallpaperSwitcher.app "$STAGING_DIR/"
+
+# BuildID を BuildID.swift から取得して .buildid を作成
+BUILD_ID=$(grep 'static let buildID' Sources/Generated/BuildID.swift 2>/dev/null | sed 's/.*"\(.*\)"/\1/')
+if [ -n "$BUILD_ID" ]; then
+    echo "$BUILD_ID" > "$STAGING_DIR/.buildid"
+fi
+
 create-dmg \
   --volname "WallpaperSwitcher" \
   --background ~/Documents/backImage.tiff \
@@ -10,4 +22,7 @@ create-dmg \
   --hide-extension "WallpaperSwitcher.app" \
   --app-drop-link 510 200 \
   WallpaperSwitcher.dmg \
-  build/WallpaperSwitcher.app
+  "$STAGING_DIR"
+
+# クリーンアップ
+rm -rf "$STAGING_DIR"

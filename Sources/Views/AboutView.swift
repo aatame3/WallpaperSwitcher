@@ -15,6 +15,10 @@ struct AboutView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
 
+            Text("Build: \(BuildInfo.buildID)")
+                .font(.system(size: 9, design: .monospaced))
+                .foregroundColor(.secondary.opacity(0.6))
+
             Text("壁紙プリセットをワンクリックで切り替え")
                 .font(.body)
                 .foregroundColor(.secondary)

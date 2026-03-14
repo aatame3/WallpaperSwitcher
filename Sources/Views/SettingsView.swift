@@ -185,6 +185,10 @@ private struct AboutTab: View {
                 .padding(.vertical, 3)
                 .background(Capsule().fill(Color.secondary.opacity(0.1)))
 
+            Text("Build: \(BuildInfo.buildID)")
+                .font(.system(size: 9, design: .monospaced))
+                .foregroundColor(.secondary.opacity(0.6))
+
             Text("壁紙プリセットをワンクリックで切り替え")
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
